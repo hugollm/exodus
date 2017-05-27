@@ -4,33 +4,34 @@ import "testing"
 import "reflect"
 
 func TestNewIndividual(t *testing.T) {
-    individual := NewIndividual(3, newGene)
+    individual := NewIndividual(3, NewGeneTestFunction)
     if ! reflect.DeepEqual(individual.genome, []int{9, 9, 9}) {
         t.Fail()
     }
 }
 
-func TestEvaluate(t *testing.T) {
-    individual := NewIndividual(3, newGene)
-    individual.Evaluate(fitness)
+func TestIndividualEvaluate(t *testing.T) {
+    individual := NewIndividual(3, NewGeneTestFunction)
+    individual.Evaluate(FitnessTestFunction)
     if individual.fitness != 1.25 {
         t.Fail()
     }
 }
 
-func TestCopy(t *testing.T) {
-    individual := NewIndividual(3, newGene)
+func TestIndividualMutate(t *testing.T) {
+    individual := NewIndividual(3, NewGeneTestFunction)
+    individual.genome = []int{8, 8, 8}
+    individual.Mutate(1, NewGeneTestFunction)
+    if ! reflect.DeepEqual(individual.genome, []int{9, 9, 9}) {
+        t.Fail()
+    }
+}
+
+func TestIndividualCopy(t *testing.T) {
+    individual := NewIndividual(3, NewGeneTestFunction)
     individual2 := individual.Copy()
     individual.genome[2] = 8
     if ! reflect.DeepEqual(individual2.genome, []int{9, 9, 9}) {
         t.Fail()
     }
-}
-
-func newGene() int {
-    return 9
-}
-
-func fitness(genome []int) float64 {
-    return 1.25
 }

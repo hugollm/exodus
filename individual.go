@@ -1,5 +1,7 @@
 package exodus
 
+import "math/rand"
+
 func NewIndividual(size int, newGene NewGeneFunction) Individual {
     individual := Individual{}
     individual.genome = make([]int, size)
@@ -11,6 +13,14 @@ func NewIndividual(size int, newGene NewGeneFunction) Individual {
 
 func (individual *Individual) Evaluate(fitness FitnessFunction) {
     individual.fitness = fitness(individual.genome)
+}
+
+func (individual *Individual) Mutate(rate float64, newGene NewGeneFunction) {
+    for i := 0; i < len(individual.genome); i++ {
+        if rand.Float64() < rate {
+            individual.genome[i] = newGene()
+        }
+    }
 }
 
 func (individual *Individual) Copy() Individual {
