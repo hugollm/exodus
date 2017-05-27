@@ -1,10 +1,5 @@
 package exodus
 
-type Individual struct {
-    genome []int
-    fitness float64
-}
-
 func NewIndividual(size int, newGene NewGeneFunction) Individual {
     individual := Individual{}
     individual.genome = make([]int, size)
@@ -23,7 +18,7 @@ func (individual *Individual) Copy() Individual {
     newIndividual := Individual{}
     newIndividual.genome = make([]int, size)
     for i := 0; i < size; i++ {
-        newIndividual.genome[i] = individual[i]
+        newIndividual.genome[i] = individual.genome[i]
     }
     return newIndividual
 }
