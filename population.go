@@ -31,6 +31,8 @@ func (p *Population) Evolve(crossoverRate float64, mutationRate float64, newGene
         offspring := Crossover(parents, crossoverRate)
         offspring[0].Mutate(mutationRate, newGene)
         offspring[1].Mutate(mutationRate, newGene)
+        newPopulation.individuals[i+i] = offspring[0].Copy()
+        newPopulation.individuals[i+i+1] = offspring[1].Copy()
     }
     for i := 0; i < populationSize; i++ {
         p.individuals[i] = newPopulation.individuals[i]

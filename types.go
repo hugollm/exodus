@@ -12,3 +12,4 @@ type Individual struct {
 
 type NewGeneFunction func() int
 type FitnessFunction func([]int) float64
+type OnGenerationFunction func(*Search)

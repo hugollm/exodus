@@ -1,6 +1,7 @@
 package exodus
 
 import "math/rand"
+import "time"
 
 type Search struct {
 
@@ -13,26 +14,23 @@ type Search struct {
     onGeneration OnGenerationFunction
 
     generation int
+    population Population
     best Individual
     stop bool
 }
 
-type NewGeneFunction func() int
-type FitnessFunction func([]int) float64
-type OnGenerationFunction func(*Search)
-
 func (s *Search) Start() {
     rand.Seed(time.Now().UTC().UnixNano())
-    population := NewPopulation(s.populationSize, s.individualSize, s.newGene)
+    s.population = NewPopulation(s.populationSize, s.individualSize, s.newGene)
     for {
         s.generation++
-        population.Evaluate(fitness)
-        s.best = population.best
-        s.onGeneration(&s)
+        s.population.Evaluate(fitness)
+        s.best = s.population.best
+        s.onGeneration(s)
         if s.stop {
             break
         }
-        population.Evolve()
+        s.population.Evolve(s.crossoverRate, s.mutationRate, s.newGene)
     }
 }
 
