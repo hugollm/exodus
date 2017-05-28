@@ -7,7 +7,7 @@ func TestSelectWithOneInvividual(t *testing.T) {
     population.Evaluate(FitnessTestFunction)
     roulette := NewRoulette(population)
     individual := roulette.Select()
-    if individual.genome == nil {
+    if individual.Genome == nil {
         t.Fail()
     }
 }
@@ -20,11 +20,11 @@ func TestSelectWithTwoIndividuals(t *testing.T) {
         return 1.0
     }
     population := NewPopulation(2, 5, NewGeneTestFunction)
-    population.individuals[0].Evaluate(f0)
-    population.individuals[1].Evaluate(f1)
+    population.Individuals[0].Evaluate(f0)
+    population.Individuals[1].Evaluate(f1)
     roulette := NewRoulette(population)
     individual := roulette.Select()
-    if individual.fitness != population.individuals[1].fitness {
+    if individual.Fitness != population.Individuals[1].Fitness {
         t.Fail()
     }
 }

@@ -4,13 +4,13 @@ import "testing"
 
 func TestSearch(t *testing.T) {
     search := Search{
-        individualSize: 10,
-        populationSize: 30,
-        crossoverRate: 0.6,
-        mutationRate: 0.01,
-        newGene: newGene,
-        fitness: fitness,
-        onGeneration: onGeneration,
+        IndividualSize: 10,
+        PopulationSize: 30,
+        CrossoverRate: 0.6,
+        MutationRate: 0.01,
+        NewGene: newGene,
+        Fitness: fitness,
+        OnGeneration: onGeneration,
     }
     search.Start()
 }
@@ -28,10 +28,10 @@ func fitness(genome []int) float64 {
 }
 
 func onGeneration(search *Search) {
-    if search.generation > 100 {
+    if search.Generation > 100 {
         panic("Too many generations")
     }
-    if (search.best.fitness == 10) {
+    if (search.Best.Fitness == 10) {
         search.Stop()
     }
 }

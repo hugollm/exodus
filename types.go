@@ -1,13 +1,13 @@
 package exodus
 
 type Population struct {
-    individuals []Individual
-    best Individual
+    Individuals []Individual
+    Best Individual
 }
 
 type Individual struct {
-    genome []int
-    fitness float64
+    Genome []int
+    Fitness float64
 }
 
 type NewGeneFunction func() int

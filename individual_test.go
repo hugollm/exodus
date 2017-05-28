@@ -5,7 +5,7 @@ import "reflect"
 
 func TestNewIndividual(t *testing.T) {
     individual := NewIndividual(3, NewGeneTestFunction)
-    if ! reflect.DeepEqual(individual.genome, []int{9, 9, 9}) {
+    if ! reflect.DeepEqual(individual.Genome, []int{9, 9, 9}) {
         t.Fail()
     }
 }
@@ -13,7 +13,7 @@ func TestNewIndividual(t *testing.T) {
 func TestIndividualEvaluate(t *testing.T) {
     individual := NewIndividual(3, NewGeneTestFunction)
     individual.Evaluate(FitnessTestFunction)
-    if individual.fitness != 1.25 {
+    if individual.Fitness != 1.25 {
         t.Fail()
     }
 }
@@ -21,8 +21,8 @@ func TestIndividualEvaluate(t *testing.T) {
 func TestIndividualCopy(t *testing.T) {
     individual := NewIndividual(3, NewGeneTestFunction)
     individual2 := individual.Copy()
-    individual.genome[2] = 8
-    if ! reflect.DeepEqual(individual2.genome, []int{9, 9, 9}) {
+    individual.Genome[2] = 8
+    if ! reflect.DeepEqual(individual2.Genome, []int{9, 9, 9}) {
         t.Fail()
     }
 }

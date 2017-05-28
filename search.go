@@ -5,35 +5,36 @@ import "time"
 
 type Search struct {
 
-    individualSize int
-    populationSize int
-    crossoverRate float64
-    mutationRate float64
-    newGene NewGeneFunction
-    fitness FitnessFunction
-    onGeneration OnGenerationFunction
+    IndividualSize int
+    PopulationSize int
+    CrossoverRate float64
+    MutationRate float64
+    NewGene NewGeneFunction
+    Fitness FitnessFunction
+    OnGeneration OnGenerationFunction
 
-    generation int
-    population Population
-    best Individual
+    Generation int
+    Population Population
+    Best Individual
+
     stop bool
 }
 
-func (s *Search) Start() {
+func (search *Search) Start() {
     rand.Seed(time.Now().UTC().UnixNano())
-    s.population = NewPopulation(s.populationSize, s.individualSize, s.newGene)
+    search.Population = NewPopulation(search.PopulationSize, search.IndividualSize, search.NewGene)
     for {
-        s.generation++
-        s.population.Evaluate(fitness)
-        s.best = s.population.best
-        s.onGeneration(s)
-        if s.stop {
+        search.Generation++
+        search.Population.Evaluate(search.Fitness)
+        search.Best = search.Population.Best
+        search.OnGeneration(search)
+        if search.stop {
             break
         }
-        s.population.Evolve(s.crossoverRate, s.mutationRate, s.newGene)
+        search.Population.Evolve(search.CrossoverRate, search.MutationRate, search.NewGene)
     }
 }
 
-func (s *Search) Stop() {
-    s.stop = true
+func (search *Search) Stop() {
+    search.stop = true
 }
