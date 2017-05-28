@@ -4,6 +4,12 @@ import "testing"
 
 func TestRandomInt(t *testing.T) {
     for i := 0; i < 1000; i++ {
+        n := RandomInt(0, 1)
+        if n < 0 || n > 1 {
+            t.Fail()
+        }
+    }
+    for i := 0; i < 1000; i++ {
         n := RandomInt(0, 2)
         if n < 0 || n > 2 {
             t.Fail()
