@@ -1,5 +1,10 @@
 package exodus
 
+type Population struct {
+    individuals []Individual
+    best Individual
+}
+
 type Individual struct {
     genome []int
     fitness float64
