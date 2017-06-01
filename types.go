@@ -6,10 +6,10 @@ type Population struct {
 }
 
 type Individual struct {
-    Genome []int
+    Genome []float64
     Fitness float64
 }
 
-type NewGeneFunction func() int
-type FitnessFunction func([]int) float64
+type NewGeneFunction func() float64
+type FitnessFunction func([]float64) float64
 type OnGenerationFunction func(*Search)

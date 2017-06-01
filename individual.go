@@ -10,7 +10,7 @@ func NewIndividual(size int, newGene NewGeneFunction) Individual {
 
 func NewEmptyIndividual(size int) Individual {
     individual := Individual{}
-    individual.Genome = make([]int, size)
+    individual.Genome = make([]float64, size)
     return individual
 }
 
@@ -21,7 +21,7 @@ func (individual *Individual) Evaluate(fitness FitnessFunction) {
 func (individual *Individual) Copy() Individual {
     size := len(individual.Genome)
     newIndividual := Individual{}
-    newIndividual.Genome = make([]int, size)
+    newIndividual.Genome = make([]float64, size)
     for i := 0; i < size; i++ {
         newIndividual.Genome[i] = individual.Genome[i]
     }

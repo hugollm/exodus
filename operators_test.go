@@ -13,10 +13,10 @@ func TestSelectParents(t *testing.T) {
 }
 
 func TestCrossover(t *testing.T) {
-    f0 := func() int {
+    f0 := func() float64 {
         return 0
     }
-    f1 := func() int {
+    f1 := func() float64 {
         return 1
     }
     parents := [2]Individual{NewIndividual(5, f0), NewIndividual(5, f1)}
@@ -32,9 +32,9 @@ func TestCrossover(t *testing.T) {
 
 func TestMutate(t *testing.T) {
     individual := NewIndividual(3, NewGeneTestFunction)
-    individual.Genome = []int{8, 8, 8}
+    individual.Genome = []float64{8, 8, 8}
     individual.Mutate(1, NewGeneTestFunction)
-    if ! reflect.DeepEqual(individual.Genome, []int{9, 9, 9}) {
+    if ! reflect.DeepEqual(individual.Genome, []float64{9, 9, 9}) {
         t.Fail()
     }
 }

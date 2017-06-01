@@ -13,10 +13,10 @@ func TestSelectWithOneInvividual(t *testing.T) {
 }
 
 func TestSelectWithTwoIndividuals(t *testing.T) {
-    f0 := func(genome []int) float64 {
+    f0 := func(genome []float64) float64 {
         return 0.0
     }
-    f1 := func(genome []int) float64 {
+    f1 := func(genome []float64) float64 {
         return 1.0
     }
     population := NewPopulation(2, 5, NewGeneTestFunction)

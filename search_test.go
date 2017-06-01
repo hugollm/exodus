@@ -15,12 +15,12 @@ func TestSearch(t *testing.T) {
     search.Start()
 }
 
-func newGene() int {
-    return RandomInt(0, 1)
+func newGene() float64 {
+    return float64(RandomInt(0, 1))
 }
 
-func fitness(genome []int) float64 {
-    fit := 0
+func fitness(genome []float64) float64 {
+    fit := 0.0
     for i := 0; i < len(genome); i++ {
         fit += genome[i]
     }
