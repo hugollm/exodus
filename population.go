@@ -15,12 +15,21 @@ func NewEmptyPopulation(populationSize int) Population {
 }
 
 func (population *Population) Evaluate(fitness FitnessFunction) {
+    channel := make(chan Individual)
     for i := 0; i < len(population.Individuals); i++ {
-        population.Individuals[i].Evaluate(fitness)
+        go asyncEvaluate(population.Individuals[i], fitness, channel)
+    }
+    for i := 0; i < len(population.Individuals); i++ {
+        population.Individuals[i] = <- channel
         if population.Best.Fitness < population.Individuals[i].Fitness {
             population.Best = population.Individuals[i]
         }
     }
+}
+
+func asyncEvaluate(individual Individual, fitness FitnessFunction, channel chan Individual) {
+    individual.Evaluate(fitness)
+    channel <- individual
 }
 
 func (population *Population) Evolve(crossoverRate float64, mutationRate float64, newGene NewGeneFunction) {
