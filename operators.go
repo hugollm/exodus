@@ -9,6 +9,11 @@ func (population *Population) SelectParents() [2]Individual {
     return [2]Individual{a, b}
 }
 
+func (population *Population) SelectIndividual() Individual {
+    roulette := NewRoulette(*population)
+    return roulette.Select()
+}
+
 func Crossover(parents [2]Individual, probability float64) [2]Individual {
     if rand.Float64() > probability {
         return [2]Individual{parents[0].Copy(), parents[1].Copy()}

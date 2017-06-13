@@ -12,6 +12,15 @@ func TestSelectParents(t *testing.T) {
     }
 }
 
+func TestSelectIndividual(t *testing.T) {
+    population := NewPopulation(1, 5, NewGeneTestFunction)
+    population.Evaluate(FitnessTestFunction)
+    individual := population.SelectIndividual()
+    if individual.Genome == nil {
+        t.Fail()
+    }
+}
+
 func TestCrossover(t *testing.T) {
     f0 := func() float64 {
         return 0
