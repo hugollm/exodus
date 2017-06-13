@@ -1,5 +1,7 @@
 package exodus
 
+import "math/rand"
+
 func NewPopulation(populationSize int, individualSize int, newGene NewGeneFunction) Population {
     population := NewEmptyPopulation(populationSize)
     for i := 0; i < populationSize; i++ {
@@ -30,6 +32,19 @@ func (population *Population) Evaluate(fitness FitnessFunction) {
 func asyncEvaluate(individual Individual, fitness FitnessFunction, channel chan Individual) {
     individual.Evaluate(fitness)
     channel <- individual
+}
+
+func (population *Population) Migrate(migrationRate float64, imigrants *[]Individual) {
+    if rand.Float64() < migrationRate {
+        if InServer() {
+            MigrateLocally()
+        }
+        if InClient() {
+            AcceptImigrant(imigrants, population)
+            go SendBestToServer(population.Best)
+            go MigrateToServer(population.SelectIndividual(), imigrants)
+        }
+    }
 }
 
 func (population *Population) Evolve(crossoverRate float64, mutationRate float64, newGene NewGeneFunction) {

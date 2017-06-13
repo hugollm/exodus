@@ -9,6 +9,7 @@ type Search struct {
     PopulationSize int
     CrossoverRate float64
     MutationRate float64
+    MigrationRate float64
     NewGene NewGeneFunction
     Fitness FitnessFunction
     OnGeneration OnGenerationFunction
@@ -16,6 +17,7 @@ type Search struct {
     Generation int
     Population Population
     Best Individual
+    Imigrants []Individual
 
     stop bool
 }
@@ -23,9 +25,15 @@ type Search struct {
 func (search *Search) Start() {
     rand.Seed(time.Now().UTC().UnixNano())
     search.Population = NewPopulation(search.PopulationSize, search.IndividualSize, search.NewGene)
+    if InServer() {
+        go RunServer(search)
+    } else {
+        TestConnectionWithServer()
+    }
     for {
         search.Generation++
         search.Population.Evaluate(search.Fitness)
+        search.Population.Migrate(search.MigrationRate, &search.Imigrants)
         search.Best = search.Population.Best
         search.OnGeneration(search)
         if search.stop {
