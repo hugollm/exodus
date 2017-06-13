@@ -27,3 +27,9 @@ func (individual *Individual) Copy() Individual {
     }
     return newIndividual
 }
+
+func (individual *Individual) CopyWithFitness() Individual {
+    newIndividual := individual.Copy()
+    newIndividual.Fitness = individual.Fitness
+    return newIndividual
+}
