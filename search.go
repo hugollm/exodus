@@ -1,6 +1,7 @@
 package exodus
 
 import "math/rand"
+import "sync"
 import "time"
 
 type Search struct {
@@ -20,13 +21,17 @@ type Search struct {
     Imigrants []Individual
 
     stop bool
+    mutex sync.Mutex
 }
 
+var globalSearch *Search
+
 func (search *Search) Start() {
+    globalSearch = search
     rand.Seed(time.Now().UTC().UnixNano())
     search.Population = NewPopulation(search.PopulationSize, search.IndividualSize, search.NewGene)
     if InServer() {
-        go RunServer(search)
+        go RunServer()
     } else {
         TestConnectionWithServer()
     }

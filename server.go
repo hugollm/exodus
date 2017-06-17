@@ -6,14 +6,11 @@ import "math/rand"
 import "net/http"
 import "os"
 
-var globalSearch *Search
-
 func InServer() bool {
     return os.Getenv("EXODUS_SERVER") == ""
 }
 
-func RunServer(search *Search) {
-    globalSearch = search
+func RunServer() {
     http.HandleFunc("/test-connection", TestConnectionEndpoint)
     http.HandleFunc("/send-best", SendBestEndpoint)
     http.HandleFunc("/migrate", MigrateEndpoint)
@@ -35,22 +32,27 @@ func SendBestEndpoint(response http.ResponseWriter, request *http.Request) {
 }
 
 func receiveBest(individual Individual) {
+    globalSearch.mutex.Lock()
     if globalSearch.Population.Best.Fitness < individual.Fitness {
         globalSearch.Population.Best = individual
         globalSearch.Best = individual
     }
+    globalSearch.mutex.Unlock()
 }
 
 func MigrateEndpoint(response http.ResponseWriter, request *http.Request) {
-    emigrant := popImigrantFromSearch()
-    json.NewEncoder(response).Encode(emigrant)
     imigrant := Individual{}
     body, _ := ioutil.ReadAll(request.Body)
     json.Unmarshal(body, &imigrant)
+    globalSearch.mutex.Lock()
+    emigrant := popImigrantFromSearch()
     globalSearch.Imigrants = append(globalSearch.Imigrants, imigrant)
+    globalSearch.mutex.Unlock()
+    json.NewEncoder(response).Encode(emigrant)
 }
 
 func MigrateLocally() {
+    globalSearch.mutex.Lock()
     if len(globalSearch.Imigrants) > 0 {
         imigrant := popImigrantFromSearch()
         i := rand.Intn(len(globalSearch.Population.Individuals))
@@ -58,6 +60,7 @@ func MigrateLocally() {
     }
     emigrant := globalSearch.Population.SelectIndividual()
     globalSearch.Imigrants = append(globalSearch.Imigrants, emigrant.CopyWithFitness())
+    globalSearch.mutex.Unlock()
 }
 
 func popImigrantFromSearch() Individual {

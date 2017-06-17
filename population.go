@@ -40,7 +40,7 @@ func (population *Population) Migrate(migrationRate float64, imigrants *[]Indivi
             MigrateLocally()
         }
         if InClient() {
-            AcceptImigrant(imigrants, population)
+            AcceptImigrants(imigrants, population)
             go SendBestToServer(population.Best)
             go MigrateToServer(population.SelectIndividual(), imigrants)
         }

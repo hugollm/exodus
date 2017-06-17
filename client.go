@@ -43,16 +43,19 @@ func MigrateToServer(emigrant Individual, imigrants *[]Individual) {
     if imigrant.Genome == nil {
         return
     }
+    globalSearch.mutex.Lock()
     *imigrants = append(*imigrants, imigrant)
+    globalSearch.mutex.Unlock()
 }
 
-func AcceptImigrant(imigrants *[]Individual, population *Population) {
-    if len(*imigrants) > 0 {
-        imigrantsIndex := rand.Intn(len(*imigrants))
-        populationIndex := rand.Intn(len(population.Individuals))
-        population.Individuals[populationIndex] = (*imigrants)[imigrantsIndex]
-        *imigrants = append((*imigrants)[:imigrantsIndex], (*imigrants)[imigrantsIndex+1:]...)
+func AcceptImigrants(imigrants *[]Individual, population *Population) {
+    globalSearch.mutex.Lock()
+    for len(*imigrants) > 0 {
+        i := rand.Intn(len(population.Individuals))
+        population.Individuals[i] = (*imigrants)[0]
+        *imigrants = append((*imigrants)[:0], (*imigrants)[1:]...)
     }
+    globalSearch.mutex.Unlock()
 }
 
 func serverUrl(path string) string {
